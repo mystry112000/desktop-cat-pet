@@ -3,227 +3,169 @@ body{
   font-family:'Segoe UI',sans-serif;
   background:transparent;
   overflow:hidden;
+  width:100vw;height:100vh;
   user-select:none;
-  -webkit-app-region:drag;
 }
-#titlebar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:6px 10px;
-  background:rgba(20,20,30,.85);
-  border-radius:12px 12px 0 0;
-  -webkit-app-region:drag;
-}
-#pet-name{
-  color:#f0e0c0;
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:.5px;
-  cursor:pointer;
-}
-#titlebar-btns button{
-  -webkit-app-region:no-drag;
-  background:none;
-  border:none;
-  color:#a09080;
-  font-size:14px;
-  cursor:pointer;
-  padding:2px 6px;
-  border-radius:4px;
-  transition:.2s;
-}
-#titlebar-btns button:hover{background:rgba(255,255,255,.1);color:#fff}
-#quit-btn:hover{background:#d04040!important;color:#fff}
 
-#pet-area{
-  position:relative;
-  height:300px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(180deg,rgba(30,20,40,.6),rgba(10,8,15,.8));
-}
-#pet-area svg{filter:drop-shadow(0 4px 15px rgba(0,0,0,.4))}
-
-#cat{
+#cat-wrap{
+  position:fixed;
+  bottom:0;
+  transform:translateX(-50%);
   cursor:pointer;
-  transition:transform .3s;
-  -webkit-app-region:no-drag;
-  position:relative;
+  transition:left 2.5s cubic-bezier(.33,.66,.5,1),bottom 1s ease;
+  z-index:10;
+  pointer-events:auto;
 }
-#cat:hover{transform:scale(1.04)}
+#cat-wrap.hidden{display:none}
+#cat{transition:transform .3s;pointer-events:auto}
+#cat:hover{transform:scale(1.06)}
+#cat-svg{filter:drop-shadow(0 4px 12px rgba(0,0,0,.35));pointer-events:none}
 
 /* ── Animations ── */
 
-/* idle - subtle breathing */
-@keyframes breathe{
-  0%,100%{transform:scaleY(1)}
-  50%{transform:scaleY(1.02) scaleX(.99)}
-}
+/* idle breathe */
+@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.02) scaleX(.99)}}
 #cat.idle #ct-body{animation:breathe 2.5s ease-in-out infinite;transform-origin:center}
-#cat.idle #ct-tail{animation:tailIdle 2s ease-in-out infinite;transform-origin:bottom}
-@keyframes tailIdle{
-  0%,100%{d:path("M155 130 Q180 100 170 70 Q165 55 160 60")}
-  50%{d:path("M155 130 Q180 100 175 65 Q172 50 165 55")}
-}
 
 /* walking */
-#cat.walking #ct-body{animation:walkBody .6s ease-in-out infinite}
-#cat.walking #ct-leg-fl{animation:legF .6s ease-in-out infinite}
-#cat.walking #ct-leg-fr{animation:legB .6s ease-in-out infinite}
-#cat.walking #ct-leg-bl{animation:legB .6s ease-in-out infinite}
-#cat.walking #ct-leg-br{animation:legF .6s ease-in-out infinite}
-#cat.walking #ct-tail{animation:tailWag .4s ease-in-out infinite}
-#cat.walking{animation:walkBounce .6s ease-in-out infinite}
-@keyframes walkBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes legF{0%,100%{d:path("M85 135 Q82 148 88 158")}50%{d:path("M85 135 Q90 148 92 158")}}
-@keyframes legB{0%,100%{d:path("M85 135 Q82 148 88 158")}50%{d:path("M85 135 Q78 148 80 158")}}
-@keyframes walkBody{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-@keyframes tailWag{0%,100%{d:path("M155 130 Q180 100 170 70 Q165 55 160 60")}50%{d:path("M155 130 Q185 95 175 60 Q170 45 158 50")}}
+#cat.walking{animation:catWalk .6s ease-in-out infinite}
+@keyframes catWalk{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+#cat.walking #ct-leg-fl{animation:wLegF .6s ease-in-out infinite}
+#cat.walking #ct-leg-fr{animation:wLegB .6s ease-in-out infinite}
+#cat.walking #ct-leg-bl{animation:wLegB .6s ease-in-out infinite}
+#cat.walking #ct-leg-br{animation:wLegF .6s ease-in-out infinite}
+#cat.walking #ct-tail{animation:wTail .4s ease-in-out infinite}
+@keyframes wLegF{0%,100%{d:path("M78 120 Q76 133 80 142")}50%{d:path("M78 120 Q84 133 85 142")}}
+@keyframes wLegB{0%,100%{d:path("M78 120 Q76 133 80 142")}50%{d:path("M78 120 Q70 133 72 142")}}
+@keyframes wTail{0%,100%{d:path("M140 115 Q165 85 155 55 Q150 40 145 45")}50%{d:path("M140 115 Q170 80 160 45 Q155 30 143 35")}}
 
 /* sleeping */
-#cat.sleeping #ct-eye-l{ry:2;cy:88}
-#cat.sleeping #ct-eye-r{ry:2;cy:88}
+#cat.sleeping #ct-eye-l,#cat.sleeping #ct-eye-r{ry:2;cy:76}
 #cat.sleeping #ct-pupil-l,#cat.sleeping #ct-pupil-r{opacity:0}
 #cat.sleeping #ct-mouth,#cat.sleeping #ct-mouth2{opacity:0}
-#cat.sleeping #ct-body{animation:sleepBreathe 3s ease-in-out infinite}
-#cat.sleeping #ct-tail{animation:sleepTail 4s ease-in-out infinite}
+#cat.sleeping #ct-body{animation:sleepB 3s ease-in-out infinite}
 #cat.sleeping{animation:sleepRock 3s ease-in-out infinite}
-@keyframes sleepBreathe{0%,100%{transform:scaleY(.98)}50%{transform:scaleY(1.03)}}
-@keyframes sleepRock{0%,100%{transform:rotate(0)}50%{transform:rotate(2deg)}}
-@keyframes sleepTail{0%,100%{d:path("M155 130 Q175 110 165 90 Q160 80 155 85")}50%{d:path("M155 130 Q178 108 168 85 Q162 72 158 78")}}
+@keyframes sleepB{0%,100%{transform:scaleY(.97)}50%{transform:scaleY(1.03)}}
+@keyframes sleepRock{0%,100%{transform:rotate(0)}50%{transform:rotate(1.5deg)}}
 
 /* stretch */
-#cat.stretch #ct-body{animation:stretchBody 1.2s ease forwards}
-#cat.stretch #ct-leg-fl{animation:stretchLegFL 1.2s ease forwards}
-#cat.stretch #ct-leg-fr{animation:stretchLegFR 1.2s ease forwards}
-#cat.stretch #ct-leg-bl{animation:stretchLegBL 1.2s ease forwards}
-#cat.stretch #ct-leg-br{animation:stretchLegBR 1.2s ease forwards}
+#cat.stretch #ct-body{animation:strBody 1.2s ease forwards}
 #cat.stretch #ct-eye-l,#cat.stretch #ct-eye-r{ry:3}
-@keyframes stretchBody{
+@keyframes strBody{
   0%{transform:scaleY(1)}
-  30%{transform:scaleY(1.2) translateY(-8px)}
-  60%{transform:scaleY(1.25) translateY(-12px)}
-  100%{transform:scaleY(1) translateY(0)}
+  30%{transform:scaleY(1.18) translateY(-8px)}
+  60%{transform:scaleY(1.22) translateY(-12px)}
+  100%{transform:scaleY(1)}
 }
-@keyframes stretchLegFL{0%,100%{d:path("M85 135 Q82 148 88 158")}50%{d:path("M82 130 Q78 148 85 160")}}
-@keyframes stretchLegFR{0%,100%{d:path("M100 140 Q98 150 103 158")}50%{d:path("M97 132 Q94 148 100 160")}}
-@keyframes stretchLegBL{0%,100%{d:path("M110 140 Q108 150 115 158")}50%{d:path("M108 132 Q106 148 112 160")}}
-@keyframes stretchLegBR{0%,100%{d:path("M130 140 Q132 150 125 158")}50%{d:path("M128 132 Q130 148 122 160")}}
 
 /* yawn */
-#cat.yawn #ct-mouth,#cat.yawn #ct-mouth2{animation:mouthOpen 1.5s ease forwards}
-#cat.yawn #ct-eye-l,#cat.yawn #ct-eye-r{animation:eyeSquint 1.5s ease forwards}
-@keyframes mouthOpen{
-  0%{d:path("M75 96 Q71 99 68 97")}
-  30%{d:path("M68 96 Q75 103 82 96")}
-  100%{d:path("M75 96 Q71 99 68 97")}
+#cat.yawn #ct-mouth,#cat.yawn #ct-mouth2{animation:yMouth 1.5s ease forwards}
+@keyframes yMouth{
+  0%{d:path("M68 83.5 Q64 86 61 84")}
+  25%{d:path("M61 83 Q68 90 75 83")}
+  100%{d:path("M68 83.5 Q64 86 61 84")}
 }
-@keyframes eyeSquint{
-  0%{ry:6}
-  30%{ry:2}
-  100%{ry:6}
-}
+#cat.yawn #ct-eye-l,#cat.yawn #ct-eye-r{animation:yEye 1.5s ease forwards}
+@keyframes yEye{0%{ry:5.5}25%{ry:2}100%{ry:5.5}}
 
 /* scratch */
-#cat.scratch{animation:scratchShake .8s ease 2}
-@keyframes scratchShake{
-  0%,100%{transform:translateX(0)}
-  25%{transform:translateX(-6px) rotate(-2deg)}
-  75%{transform:translateX(6px) rotate(2deg)}
-}
-#cat.scratch #ct-leg-fl{animation:scratchLeg .15s ease infinite}
-@keyframes scratchLeg{0%,100%{d:path("M85 135 Q82 148 88 158")}50%{d:path("M82 135 Q78 148 85 158")}}
+#cat.scratch{animation:scrShake .8s ease 2}
+@keyframes scrShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px) rotate(-2deg)}75%{transform:translateX(5px) rotate(2deg)}}
+
+/* sit (idle variant) */
+#cat.sit #ct-body{animation:sitBounce 2s ease-in-out infinite}
+@keyframes sitBounce{0%,100%{transform:scaleY(.98)}50%{transform:scaleY(1.02)}}
 
 #speech-bubble{
   position:absolute;
-  top:15px;
-  right:15px;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
   background:rgba(255,255,255,.92);
   color:#333;
-  padding:8px 14px;
-  border-radius:12px 12px 12px 2px;
-  font-size:13px;
-  max-width:170px;
+  padding:6px 14px;
+  border-radius:10px 10px 10px 2px;
+  font-size:12px;
+  white-space:nowrap;
   opacity:0;
   transition:opacity .3s;
   pointer-events:none;
-  -webkit-app-region:no-drag;
-  z-index:10;
-  box-shadow:0 2px 12px rgba(0,0,0,.2);
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+  z-index:20;
 }
 #speech-bubble.show{opacity:1}
 
-#stats-bar{
-  display:flex;
-  gap:10px;
-  padding:10px 15px;
-  background:rgba(20,20,30,.85);
+/* ── Menu ── */
+#menu{
+  position:fixed;
+  bottom:170px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(18,14,28,.92);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:18px 20px 14px;
+  min-width:220px;
+  z-index:100;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  pointer-events:auto;
+  transition:opacity .25s,transform .25s;
 }
-.stat{
-  flex:1;
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-.stat-icon{font-size:14px}
-.stat-fill{
-  flex:1;
-  height:8px;
-  background:rgba(255,255,255,.15);
-  border-radius:4px;
-  overflow:hidden;
-}
-.fill{
-  height:100%;
-  border-radius:4px;
-  transition:width .5s;
-}
-#hunger-fill{background:#f0a030}
-#happiness-fill{background:#40c080}
-#energy-fill{background:#6090e0}
-
-#actions{
-  display:flex;
-  gap:6px;
-  padding:8px 12px;
-  background:rgba(15,12,20,.9);
-  justify-content:center;
-  -webkit-app-region:no-drag;
-}
-.action-btn{
-  flex:1;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.15);
-  color:#e0d0c0;
-  padding:8px 0;
-  border-radius:8px;
+#menu.hidden{opacity:0;transform:translateX(-50%) translateY(10px);pointer-events:none}
+#menu-title{
+  text-align:center;
+  color:#f0e0d0;
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:10px;
   cursor:pointer;
-  font-size:12px;
+}
+#menu-stats{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.mstat{display:flex;align-items:center;gap:6px;font-size:13px}
+.mstat span{width:20px;text-align:center}
+.mbar{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.mbar div{height:100%;border-radius:3px;transition:width .5s}
+.mbar div:nth-child(1){background:#f0a030}
+#menu-btns{display:flex;gap:4px;justify-content:center;margin-bottom:8px}
+#menu-btns button{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  color:#e0d0c0;
+  font-size:15px;
+  cursor:pointer;
   transition:.2s;
-  font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
 }
-.action-btn:hover{
-  background:rgba(255,255,255,.18);
-  border-color:rgba(255,255,255,.3);
-}
-
-#skin-picker{
-  display:flex;
-  gap:6px;
-  padding:8px 12px;
-  background:rgba(15,12,20,.9);
-  justify-content:center;
-  border-radius:0 0 12px 12px;
-  -webkit-app-region:no-drag;
-}
-.skin-dot{
-  width:18px;height:18px;
-  border-radius:50%;
+#menu-btns button:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.25)}
+#menu-skins{display:flex;gap:5px;justify-content:center;margin-bottom:4px}
+#menu-skins .skin-dot{
+  width:16px;height:16px;border-radius:50%;
   border:2px solid transparent;
   cursor:pointer;
-  transition:.2s;
+  transition:.2s;padding:0;
 }
-.skin-dot:hover{border-color:#fff;transform:scale(1.2)}
-.skin-dot.active{border-color:#f0c0a0;box-shadow:0 0 6px rgba(240,192,160,.5)}
+#menu-skins .skin-dot:hover{border-color:#fff;transform:scale(1.2)}
+#menu-skins .skin-dot.active{border-color:#f0c0a0;box-shadow:0 0 6px rgba(240,192,160,.5)}
+#menu-close{
+  position:absolute;top:8px;right:10px;
+  background:none;border:none;color:#807070;
+  cursor:pointer;font-size:14px;
+}
+#menu-close:hover{color:#fff}
+
+#tip{
+  position:fixed;
+  bottom:160px;
+  left:50%;
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.25);
+  font-size:13px;
+  pointer-events:none;
+  animation:tPulse 2s ease-in-out infinite;
+  opacity:0;
+  transition:opacity .5s;
+}
+#tip.show{opacity:1}
+@keyframes tPulse{0%,100%{opacity:.25}50%{opacity:.5}}

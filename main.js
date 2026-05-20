@@ -1,30 +1,35 @@
 const { app, BrowserWindow, ipcMain, screen } = require("electron")
-const path = require("path")
 
 let win
 
 function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+
   win = new BrowserWindow({
-    width: 400,
-    height: 500,
+    width,
+    height,
+    x: 0,
+    y: 0,
     frame: false,
     transparent: true,
     resizable: false,
     alwaysOnTop: true,
+    skipTaskbar: true,
+    hasShadow: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   })
 
+  win.setIgnoreMouseEvents(true, { forward: true })
   win.loadFile("index.html")
 
-  ipcMain.on("quit", () => app.quit())
-  ipcMain.on("minimize", () => win.minimize())
-  ipcMain.on("drag-window", (_, dx, dy) => {
-    const [x, y] = win.getPosition()
-    win.setPosition(x + dx, y + dy)
+  ipcMain.on("set-ignore-mouse", (_, ignore) => {
+    win.setIgnoreMouseEvents(ignore, { forward: true })
   })
+
+  ipcMain.on("quit", () => app.quit())
 }
 
 app.whenReady().then(createWindow)
