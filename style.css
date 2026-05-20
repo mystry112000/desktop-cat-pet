@@ -166,6 +166,50 @@ body{
   75%{transform:translateX(5px)}
 }
 
+/* stretch */
+#cat.stretch{animation:stretchAnim 1.2s ease forwards}
+@keyframes stretchAnim{
+  0%{transform:scaleY(1) translateY(0)}
+  30%{transform:scaleY(1.25) scaleX(.85) translateY(-10px)}
+  60%{transform:scaleY(1.3) scaleX(.8) translateY(-12px)}
+  100%{transform:scaleY(1) scaleX(1) translateY(0)}
+}
+#cat.stretch .eye{height:6px;top:26px;border-radius:3px}
+
+/* yawn */
+#cat.yawn{animation:yawnAnim 1.5s ease forwards}
+@keyframes yawnAnim{
+  0%{transform:scale(1)}
+  25%{transform:scale(1.08)}
+  50%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+#cat.yawn .mouth{width:18px;height:12px;border-bottom:3px solid #806060;top:40px}
+#cat.yawn .eye{height:5px;top:27px;border-radius:3px}
+
+/* scratch */
+#cat.scratch{animation:scratchAnim .8s ease 2}
+@keyframes scratchAnim{
+  0%,100%{transform:translateX(0) rotate(0)}
+  25%{transform:translateX(-8px) rotate(-5deg)}
+  50%{transform:translateX(5px) rotate(3deg)}
+  75%{transform:translateX(-3px) rotate(-2deg)}
+}
+#cat.scratch .eye{height:10px;top:24px}
+#cat.scratch .mouth{display:none}
+
+/* bathe */
+#cat.bathe{animation:batheAnim 2s ease forwards}
+@keyframes batheAnim{
+  0%{transform:rotate(0) scale(1)}
+  20%{transform:rotate(-10deg) scale(.95)}
+  40%{transform:rotate(10deg) scale(.95)}
+  60%{transform:rotate(-8deg) scale(.95)}
+  80%{transform:rotate(8deg) scale(.95)}
+  100%{transform:rotate(0) scale(1)}
+}
+#cat.bathe .eye{height:7px;top:26px;border-radius:3px;background:#806040}
+
 #speech-bubble{
   position:absolute;
   top:20px;

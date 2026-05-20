@@ -150,6 +150,55 @@ function randomWalk() {
   }, 1500)
 }
 
+// ── New animations ──
+function idleAnim(type) {
+  if (pet.sleeping) { say(`${pet.name} is sleeping zzz`); return }
+  if (pet.mood === "stretch" || pet.mood === "yawn" || pet.mood === "scratch" || pet.mood === "bathe") return
+  setMood(type)
+  const durations = { stretch: 1200, yawn: 1500, scratch: 1600, bathe: 2000 }
+  const dur = durations[type] || 1200
+  setTimeout(() => {
+    if (pet.mood === type) setMood("idle")
+  }, dur)
+  const msgs = {
+    stretch: `${pet.name} stretches out 🧘`,
+    yawn: `${pet.name} lets out a big yawn 🥱`,
+    scratch: `${pet.name} scratches behind the ear 🫳`,
+    bathe: `${pet.name} grooms their fur 🧼`,
+  }
+  say(msgs[type] || "")
+}
+window.idleAnim = idleAnim
+
+// ── Draggable window ──
+let dragging = false, startX, startY
+document.addEventListener("mousedown", e => {
+  if (e.target.closest("#titlebar-btns") || e.target.closest("#actions") || e.target.closest("#skin-picker") || e.target.closest(".stat")) return
+  dragging = true
+  startX = e.screenX
+  startY = e.screenY
+})
+document.addEventListener("mousemove", e => {
+  if (!dragging) return
+  const dx = e.screenX - startX
+  const dy = e.screenY - startY
+  if (dx || dy) ipcRenderer.send("drag-window", dx, dy)
+  startX = e.screenX
+  startY = e.screenY
+})
+document.addEventListener("mouseup", () => { dragging = false })
+
+// ── Notifications ──
+let lastNotify = {}
+function notify(title, body) {
+  const key = title + body
+  if (lastNotify[key] && Date.now() - lastNotify[key] < 30000) return
+  lastNotify[key] = Date.now()
+  try {
+    new Notification(title, { body, icon: undefined })
+  } catch (_) {}
+}
+
 // ── Pet click reactions ──
 cat.onclick = () => {
   const msgs = [
@@ -178,13 +227,28 @@ setInterval(() => {
 
     if (pet.hunger < 20 && Math.random() < 0.05) {
       say(`${pet.name} is hungry! 🍽️`)
+      notify(`${pet.name} is hungry!`, `Feed ${pet.name} before they get too hungry 🍽️`)
     }
     if (pet.happiness < 20 && Math.random() < 0.05) {
       say(`${pet.name} wants to play 🎮`)
+      notify(`${pet.name} is lonely`, `Play with ${pet.name} 🎮`)
+    }
+    if (pet.hunger < 10 && Math.random() < 0.02) {
+      notify(`⚠️ ${pet.name} is starving!`, `Feed them quick! 🍽️`)
+    }
+    if (pet.happiness < 10 && Math.random() < 0.02) {
+      notify(`💔 ${pet.name} is very sad`, `Give them some love!`)
     }
 
-    // random walks
-    if (pet.mood === "idle" && Math.random() < 0.03) randomWalk()
+    // random idle animations
+    if (pet.mood === "idle") {
+      const r = Math.random()
+      if (r < 0.02) idleAnim("stretch")
+      else if (r < 0.035) idleAnim("yawn")
+      else if (r < 0.045) idleAnim("scratch")
+      else if (r < 0.05) idleAnim("bathe")
+      else if (r < 0.08) randomWalk()
+    }
   }
 }, 3000)
 
@@ -194,3 +258,6 @@ nameEl.textContent = pet.name
 setSkin("peach")
 updateUI()
 say(`Hi! I'm ${pet.name} 🐱`)
+// request notif permission
+if (Notification.permission === "default") Notification.requestPermission()
+setTimeout(() => notify("🐱 " + pet.name, "Your cat is here! Take good care of me 💛"), 2000)
