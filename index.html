@@ -17,21 +17,60 @@
 
 <div id="pet-area">
   <div id="cat" class="idle">
-    <div id="cat-body">
-      <div id="cat-head">
-        <div class="ear left"></div>
-        <div class="ear right"></div>
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-        <div class="nose"></div>
-        <div class="mouth"></div>
-        <div class="whisker left1"></div>
-        <div class="whisker left2"></div>
-        <div class="whisker right1"></div>
-        <div class="whisker right2"></div>
-      </div>
-      <div id="cat-tail"></div>
-    </div>
+    <svg id="cat-svg" viewBox="0 0 200 200" width="180" height="180">
+      <!-- tail -->
+      <path id="ct-tail" d="M155 130 Q180 100 170 70 Q165 55 160 60" fill="none" stroke-width="7" stroke-linecap="round"/>
+
+      <!-- back legs -->
+      <path id="ct-leg-bl" d="M110 140 Q108 150 115 158" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path id="ct-leg-br" d="M130 140 Q132 150 125 158" fill="none" stroke-width="8" stroke-linecap="round"/>
+
+      <!-- body -->
+      <ellipse id="ct-body" cx="120" cy="120" rx="40" ry="28"/>
+
+      <!-- front legs -->
+      <path id="ct-leg-fl" d="M85 135 Q82 148 88 158" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path id="ct-leg-fr" d="M100 140 Q98 150 103 158" fill="none" stroke-width="8" stroke-linecap="round"/>
+
+      <!-- head -->
+      <ellipse id="ct-head" cx="75" cy="90" rx="28" ry="26"/>
+
+      <!-- ears -->
+      <path id="ct-ear-l" d="M55 72 L48 48 L65 65" stroke-linejoin="round" stroke-width="2"/>
+      <path id="ct-ear-r" d="M88 72 L100 50 L95 68" stroke-linejoin="round" stroke-width="2"/>
+      <path id="ct-ear-inner-l" d="M56 70 L51 54 L63 66" stroke-linejoin="round" stroke-width="1"/>
+      <path id="ct-ear-inner-r" d="M88 70 L96 55 L93 67" stroke-linejoin="round" stroke-width="1"/>
+
+      <!-- eyes -->
+      <ellipse id="ct-eye-l" cx="65" cy="86" rx="5" ry="6"/>
+      <ellipse id="ct-eye-r" cx="85" cy="86" rx="5" ry="6"/>
+      <circle id="ct-pupil-l" cx="66" cy="86" r="2.5" fill="#fff"/>
+      <circle id="ct-pupil-r" cx="86" cy="86" r="2.5" fill="#fff"/>
+
+      <!-- nose -->
+      <path id="ct-nose" d="M73 93 L75 96 L77 93" fill="#ff8090" stroke="#ff8090" stroke-width=".5"/>
+
+      <!-- mouth -->
+      <path id="ct-mouth" d="M75 96 Q71 99 68 97" fill="none" stroke-width="1" stroke-linecap="round"/>
+      <path id="ct-mouth2" d="M75 96 Q79 99 82 97" fill="none" stroke-width="1" stroke-linecap="round"/>
+
+      <!-- whiskers -->
+      <line id="ct-wl1" x1="48" y1="90" x2="62" y2="92" stroke-width=".8" stroke-linecap="round"/>
+      <line id="ct-wl2" x1="46" y1="95" x2="62" y2="94" stroke-width=".8" stroke-linecap="round"/>
+      <line id="ct-wr1" x1="102" y1="90" x2="88" y2="92" stroke-width=".8" stroke-linecap="round"/>
+      <line id="ct-wr2" x1="104" y1="95" x2="88" y2="94" stroke-width=".8" stroke-linecap="round"/>
+
+      <!-- stripes (tabby marks) -->
+      <path id="ct-stripe1" d="M108 103 Q115 98 120 103" fill="none" stroke-width="2" stroke-linecap="round" opacity=".3"/>
+      <path id="ct-stripe2" d="M118 102 Q125 97 130 102" fill="none" stroke-width="2" stroke-linecap="round" opacity=".3"/>
+      <path id="ct-stripe3" d="M95 65 Q98 60 102 65" fill="none" stroke-width="2" stroke-linecap="round" opacity=".3"/>
+
+      <!-- paws -->
+      <ellipse id="ct-paw-fl" cx="88" cy="160" rx="5" ry="3"/>
+      <ellipse id="ct-paw-fr" cx="103" cy="160" rx="5" ry="3"/>
+      <ellipse id="ct-paw-bl" cx="115" cy="160" rx="5" ry="3"/>
+      <ellipse id="ct-paw-br" cx="125" cy="160" rx="5" ry="3"/>
+    </svg>
   </div>
   <div id="speech-bubble"></div>
 </div>
