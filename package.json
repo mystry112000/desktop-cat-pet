@@ -1,0 +1,12 @@
+{
+  "name": "desktop-cat-pet",
+  "version": "1.0.0",
+  "description": "A cute desktop cat pet with tamagotchi mechanics",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}

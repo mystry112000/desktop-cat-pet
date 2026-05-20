@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cat Pet</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="titlebar">
+  <span id="pet-name">Kitty</span>
+  <div id="titlebar-btns">
+    <button id="min-btn">─</button>
+    <button id="quit-btn">✕</button>
+  </div>
+</div>
+
+<div id="pet-area">
+  <div id="cat" class="idle">
+    <div id="cat-body">
+      <div id="cat-head">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+        <div class="whisker left1"></div>
+        <div class="whisker left2"></div>
+        <div class="whisker right1"></div>
+        <div class="whisker right2"></div>
+      </div>
+      <div id="cat-tail"></div>
+    </div>
+  </div>
+  <div id="speech-bubble"></div>
+</div>
+
+<div id="stats-bar">
+  <div class="stat"><span class="stat-icon">🍽️</span><div class="stat-fill"><div id="hunger-fill" class="fill"></div></div></div>
+  <div class="stat"><span class="stat-icon">🎮</span><div class="stat-fill"><div id="happiness-fill" class="fill"></div></div></div>
+  <div class="stat"><span class="stat-icon">😴</span><div class="stat-fill"><div id="energy-fill" class="fill"></div></div></div>
+</div>
+
+<div id="actions">
+  <button class="action-btn" onclick="feed()">🍽️ Feed</button>
+  <button class="action-btn" onclick="play()">🎮 Play</button>
+  <button class="action-btn" onclick="sleep()">😴 Sleep</button>
+</div>
+
+<div id="skin-picker">
+  <button class="skin-dot" style="background:#ff9e7a" onclick="setSkin('peach')"></button>
+  <button class="skin-dot" style="background:#8a8a8a" onclick="setSkin('gray')"></button>
+  <button class="skin-dot" style="background:#1a1a1a" onclick="setSkin('black')"></button>
+  <button class="skin-dot" style="background:#f5deb3" onclick="setSkin('cream')"></button>
+  <button class="skin-dot" style="background:#d4a574" onclick="setSkin('brown')"></button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
